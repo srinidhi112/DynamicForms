@@ -1,3 +1,5 @@
+//JSON Config
+
 import { Iform } from "../interface/form.interface";
 
 export const employeeInfoConfig : Iform = {

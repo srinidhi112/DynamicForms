@@ -15,6 +15,7 @@ export class DynamicFormComponent implements OnInit {
   dynamicFormGroup : FormGroup = this.fb.group({}, {updateOn: 'submit'});
 
   ngOnInit(): void {
+      // form builder on load
       if(this.form?.formControls){
         let formGroup: any = {};
         this.form.formControls.forEach((control: IFormControl) => {
