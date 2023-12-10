@@ -1,0 +1,39 @@
+<h1 class="title fw-bold">{{ form.formTitle }}</h1>
+
+<form #myForm="ngForm" class="row g-3" [formGroup]="dynamicFormGroup">
+    <ng-container *ngFor="let control of form.formControls">
+      <div *ngIf="['text','number','date'].includes(control.type)" [class]="control.class">
+          <label class="form-label">{{ control.label }}</label>
+          <input formControlName="{{control.name}}" class="form-control" [type]="control.type">
+          <small class="text-danger" *ngIf="dynamicFormGroup.get(control.name)?.invalid && (dynamicFormGroup.get(control.name)?.touched || myForm.submitted)">{{getValidationError(control)}}</small>
+      </div>
+
+      <div *ngIf="control.type === 'select'" [class]="control.class">
+        <label class="form-label">{{ control.label }}</label>
+        <select formControlName="{{control.name}}" class="form-select" aria-label="Default select example">
+          <option selected value="">Choose option</option>
+          <ng-container *ngFor="let opt of control.options">
+            <option [value]="opt?.value">{{opt?.value}}</option>
+          </ng-container>
+        </select>
+        <small class="text-danger" *ngIf="dynamicFormGroup.get(control.name)?.invalid && (dynamicFormGroup.get(control.name)?.touched || myForm.submitted)">{{getValidationError(control)}}</small>
+    </div>
+
+    <div *ngIf="control.type === 'radio'" [class]="control.class">
+      <label class="form-label">{{ control.label }}</label>
+      <ng-container *ngFor="let row of control.radioOptions">
+        <div class="form-check">
+          <input formControlName="{{control?.name}}" [value]="row" class="form-check-input" type="radio">
+          <label class="form-check-label" [for]="control?.name">
+            {{row}}
+          </label>
+        </div>
+      </ng-container>
+      <small class="text-danger" *ngIf="dynamicFormGroup.get(control.name)?.invalid && (dynamicFormGroup.get(control.name)?.touched || myForm.submitted)">{{getValidationError(control)}}</small>
+  </div>
+    </ng-container>
+    <div class="col-12">
+      <button class="btn btn-danger mx-2" type="submit" (click)="onSubmit()">{{form.saveBtnTitle}}</button>
+      <button class="btn btn-secondary mx-2" type="submit" (click)="resetForm()">{{form.resetBtnTitle}}</button>
+    </div>
+</form>
